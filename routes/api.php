@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post("create-student","StudentController@createStudent");
+
+Route::get("students", "StudentController@studentsListing");
+
+Route::get("student/{id}", "StudentController@studentDetail");
