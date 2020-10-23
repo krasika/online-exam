@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Student;
-use DB;
+use DB, Hash;
 
 class StudentController extends Controller
 {
@@ -18,8 +18,9 @@ class StudentController extends Controller
     	$validator = Validator::make($request->all(), [
     		'first_name' => 'required',
     		'last_name'  => 'required',
-    		'email'      => 'required | email',
-    		'phone'      => 'required | numeric',
+    		'password'   => 'required',
+    		'email'      => 'required | email | unique:students,email',
+    		'phone'      => 'nullable | numeric | unique:students,phone',
     	]);
 
     	if ($validator->fails()) {
@@ -30,7 +31,8 @@ class StudentController extends Controller
             "first_name" =>      $request->first_name,
             "last_name"  =>      $request->last_name,
             "email"      =>      $request->email,
-            "phone"      =>      $request->phone
+            "phone"      =>      $request->phone,
+            "password"   =>      Hash::make($request->password),
         );
 
         DB::beginTransaction();
